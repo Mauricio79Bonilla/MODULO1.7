@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de salud — MAPFIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#173D2E;
+    --forest-deep:#0F2A20;
+    --moss:#3F7856;
+    --paper:#F7F4EC;
+    --sand:#EDE7D8;
+    --ink:#1B1A16;
+    --ink-soft:#514F45;
+    --ember:#E2662D;
+    --ember-soft:#F4C7A8;
+    --line:#DCD5C0;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  :focus-visible{outline:3px solid var(--ember); outline-offset:3px;}
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    background:var(--forest);
+    color:var(--paper);
+    position:sticky;
+    top:0;
+    z-index:50;
+    border-bottom:1px solid rgba(247,244,236,0.12);
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 32px;
+  }
+  .brand-block{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    text-decoration:none;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:23px;
+    font-weight:700;
+    color:var(--paper);
+  }
+  .tagline{
+    font-size:12.5px;
+    font-weight:500;
+    color:var(--ember-soft);
+    padding-left:42px;
+    letter-spacing:0.01em;
+  }
+  .logo-mark{
+    width:32px;height:32px;
+    border-radius:50%;
+    background:var(--ember);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+  }
+  .logo-mark img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .back-link{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    font-weight:500;
+    text-decoration:none;
+    color:rgba(247,244,236,0.82);
+  }
+  .back-link:hover{color:var(--paper);}
+  .back-link svg{width:16px;height:16px;}
+
+  @media (max-width:600px){
+    .tagline{display:none;}
+  }
+
+  .page-hero{
+    padding:64px 0 8px;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--moss);
+    background:rgba(63,120,86,0.1);
+    padding:7px 14px;
+    border-radius:999px;
+    margin-bottom:20px;
+  }
+  .eyebrow::before{content:""; width:7px;height:7px;border-radius:50%;background:var(--ember);}
+  .page-hero h1{
+    font-size:clamp(30px,4.2vw,44px);
+    line-height:1.1;
+    color:var(--forest-deep);
+    font-weight:700;
+    max-width:20ch;
+  }
+  .page-hero p{
+    margin-top:16px;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:56ch;
+  }
+
+  section{padding:48px 0 96px;}
+
+
+  .ficha-wrap{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:44px;
+    align-items:start;
+  }
+  .ficha-intro{
+    background:var(--sand);
+    border-radius:20px;
+    padding:30px 28px;
+    position:sticky;
+    top:96px;
+  }
+  .ficha-intro h3{
+    font-size:19px;
+    color:var(--forest-deep);
+    font-weight:600;
+  }
+  .ficha-intro p{
+    margin-top:12px;
+    font-size:14.5px;
+    line-height:1.65;
+    color:var(--ink-soft);
+  }
+  .ficha-steps{margin-top:24px; display:flex; flex-direction:column; gap:16px;}
+  .ficha-step{display:flex; gap:12px; font-size:14px; color:var(--ink-soft); line-height:1.5;}
+  .ficha-step .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--paper);
+    background:var(--moss);
+    width:22px; height:22px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .ficha-note{
+    margin-top:24px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:16px;
+  }
+  .ficha-form{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:32px;
+  }
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
+  .form-field{display:flex; flex-direction:column; gap:6px;}
+  .form-field.full{grid-column:1 / -1;}
+  .form-field label{font-size:13px; font-weight:600; color:var(--forest-deep);}
+  .form-field input,
+  .form-field select,
+  .form-field textarea{
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:11px 13px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    background:var(--paper);
+  }
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus{border-color:var(--moss); outline:none;}
+  .form-field textarea{resize:vertical; min-height:80px;}
+  .form-hint{font-size:12px; color:var(--ink-soft); margin-top:16px;}
+  .form-submit{
+    margin-top:8px;
+    width:100%;
+    background:var(--forest);
+    color:var(--paper);
+    border:0;
+    padding:15px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .form-submit:hover{background:var(--forest-deep);}
+
+  .ficha-summary{
+    display:none;
+    margin-top:24px;
+    background:var(--forest);
+    color:var(--paper);
+    border-radius:16px;
+    padding:26px 28px;
+  }
+  .ficha-summary.show{display:block;}
+  .ficha-summary h4{
+    font-size:13px;
+    color:var(--ember-soft);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .ficha-summary dl{
+    margin:16px 0 0;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:99px 16px;
+    font-size:14px;
+  }
+  .ficha-summary dt{color:rgba(247,244,236,0.6);}
+  .ficha-summary dd{margin:0; font-weight:500;}
+  .ficha-summary-actions{
+    margin-top:22px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn-primary{
+    background:var(--ember);
+    color:var(--forest-deep);
+    padding:13px 22px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:14px;
+    text-decoration:none;
+    display:inline-block;
+  }
+  .btn-primary:hover{background:#C9551F;}
+  .btn-ghost{
+    padding:13px 22px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:14px;
+    text-decoration:none;
+    border:1.5px solid rgba(247,244,236,0.35);
+    color:var(--paper);
+  }
+  .btn-ghost:hover{border-color:var(--paper);}
+
+  @media (max-width:860px){
+    .ficha-wrap{grid-template-columns:1fr;}
+    .ficha-intro{position:static;}
+    .form-row{grid-template-columns:1fr;}
+  }
+
+  footer{
+    background:var(--forest-deep);
+    color:rgba(247,244,236,0.6);
+    padding:36px 0;
+    font-size:14px;
+  }
+  .footer-simple{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .footer-social{
+    display:flex;
+    gap:18px;
+    align-items:center;
+  }
+  .social-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13.5px;
+    color:rgba(247,244,236,0.85);
+  }
+  .social-circle{
+    width:38px; height:38px;
+    border-radius:50%;
+    border:1px solid rgba(247,244,236,0.22);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .social-circle img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .footer-copy{font-size:13.5px; color:rgba(247,244,236,0.55);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a href="mapfit.html" class="brand-block">
+      <span class="logo">
+        <span class="logo-mark">
+          <img src="logo.jpeg" alt="Logo MAPFIT">
+        </span>
+        MAPFIT
+      </span>
+      <span class="tagline">Tu ruta hacia una vida saludable</span>
+    </a>
+    <a href="mapfit.html" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Volver al inicio
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-hero">
+    <span class="eyebrow">Ficha de salud</span>
+    <h1>Cuéntanos de ti y armamos tu primera ficha.</h1>
+    <p>Con estos datos, MAPFIT arma tu rutina y tu plan de alimentación inicial. Esta ficha no reemplaza una consulta médica.</p>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="ficha-wrap">
+        <div class="ficha-intro">
+          <h3>¿Cómo se usa esta ficha?</h3>
+          <p>Es el primer paso de tu recorrido: con estos datos generamos una propuesta inicial que luego puedes afinar dentro de la app junto a tu progreso real.</p>
+          <div class="ficha-steps">
+            <div class="ficha-step"><span class="num">1</span>Completa tus datos generales y de salud.</div>
+            <div class="ficha-step"><span class="num">2</span>Recibe un resumen con tu punto de partida.</div>
+            <div class="ficha-step"><span class="num">3</span>Elige el plan que se ajuste a tu proceso.</div>
+          </div>
+          <p class="ficha-note">Tus datos se usan solo para armar tu ficha inicial y no se comparten con terceros.</p>
+        </div>
+
+        <div>
+          <form class="ficha-form" id="fichaForm">
+            <div class="form-row">
+              <div class="form-field">
+                <label for="f-nombre">Nombre completo</label>
+                <input type="text" id="f-nombre" name="nombre" placeholder="Ej. María Torres" required>
+              </div>
+              <div class="form-field">
+                <label for="f-edad">Edad</label>
+                <input type="number" id="f-edad" name="edad" min="12" max="99" placeholder="Ej. 34" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="f-peso">Peso actual (kg)</label>
+                <input type="number" id="f-peso" name="peso" min="20" max="300" step="0.1" placeholder="Ej. 82" required>
+              </div>
+              <div class="form-field">
+                <label for="f-altura">Estatura (cm)</label>
+                <input type="number" id="f-altura" name="altura" min="100" max="230" placeholder="Ej. 165" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="f-condicion">Condición principal</label>
+                <select id="f-condicion" name="condicion" required>
+                  <option value="">Selecciona una opción</option>
+                  <option>Sobrepeso</option>
+                  <option>Obesidad</option>
+                  <option>Sedentarismo</option>
+                  <option>Presión alta</option>
+                  <option>Glucosa elevada</option>
+                  <option>Ninguna, solo quiero mejorar</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="f-actividad">Nivel de actividad actual</label>
+                <select id="f-actividad" name="actividad" required>
+                  <option value="">Selecciona una opción</option>
+                  <option>Casi nula</option>
+                  <option>Baja (1-2 veces por semana)</option>
+                  <option>Moderada (3-4 veces por semana)</option>
+                  <option>Alta (5+ veces por semana)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field full">
+                <label for="f-objetivo">Tu objetivo principal</label>
+                <select id="f-objetivo" name="objetivo" required>
+                  <option value="">Selecciona una opción</option>
+                  <option>Bajar de peso</option>
+                  <option>Controlar mi glucosa o presión</option>
+                  <option>Ganar constancia con el ejercicio</option>
+                  <option>Mejorar mi alimentación</option>
+                  <option>Mantener mis resultados actuales</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field full">
+                <label for="f-notas">Notas para tu médico o entrenador (opcional)</label>
+                <textarea id="f-notas" name="notas" placeholder="Lesiones previas, medicamentos, horarios disponibles, etc."></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="form-submit">Generar mi ficha</button>
+            <p class="form-hint">Tus datos se usan solo para armar tu ficha inicial y no se comparten con terceros.</p>
+          </form>
+
+          <div class="ficha-summary" id="fichaSummary">
+            <h4>Tu ficha inicial</h4>
+            <dl id="fichaSummaryList"></dl>
+            <div class="ficha-summary-actions">
+              <a href="mapfit.html#planes" class="btn-primary">Ver planes y cuotas</a>
+              <a href="mapfit.html" class="btn-ghost">Volver al inicio</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-simple">
+    <div class="footer-social">
+      <div class="social-item">
+        <div class="social-circle">
+          <img src="instagram.jpeg" alt="Instagram">
+        </div>
+        <span>Instagram: @mapfit</span>
+      </div>
+
+      <div class="social-item">
+        <div class="social-circle">
+          <img src="facebook.jpeg" alt="Facebook">
+        </div>
+        <span>Facebook: MAPFIT Oficial</span>
+      </div>
+
+      <div class="social-item">
+        <div class="social-circle">
+          <img src="tiktok.jpeg" alt="TikTok">
+        </div>
+        <span>TikTok: @mapfit</span>
+      </div>
+    </div>
+    <span class="footer-copy">© 2026 MAPFIT. Todos los derechos reservados.</span>
+  </div>
+</footer>
+
+<script>
+  const fichaForm = document.getElementById('fichaForm');
+  const fichaSummary = document.getElementById('fichaSummary');
+  const fichaSummaryList = document.getElementById('fichaSummaryList');
+
+  fichaForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(fichaForm);
+    const peso = parseFloat(data.get('peso'));
+    const alturaM = parseFloat(data.get('altura')) / 100;
+    const imc = (peso && alturaM) ? (peso / (alturaM * alturaM)).toFixed(1) : '—';
+
+    const rows = [
+      ['Nombre', data.get('nombre')],
+      ['Edad', data.get('edad') + ' años'],
+      ['Peso', peso + ' kg'],
+      ['Estatura', data.get('altura') + ' cm'],
+      ['IMC estimado', imc],
+      ['Condición principal', data.get('condicion')],
+      ['Actividad actual', data.get('actividad')],
+      ['Objetivo', data.get('objetivo')],
+    ];
+    if (data.get('notas')) rows.push(['Notas', data.get('notas')]);
+
+    fichaSummaryList.innerHTML = rows.map(([k, v]) =>
+      `<dt>${k}</dt><dd>${v}</dd>`
+    ).join('');
+
+    fichaSummary.classList.add('show');
+    fichaSummary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+</script>
+
+</body>
+</html>
